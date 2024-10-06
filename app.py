@@ -95,10 +95,16 @@ def analyze_stocks():
     if not bucket_name or not folder_path:
         return jsonify({"error": "bucket_name and folder_path are required"}), 400
 
-    top_stocks = analyze_and_infer_top_stocks_combined(bucket_name, folder_path)
 
-    return jsonify({"top_stocks": top_stocks})
+    try:
+        top_stocks = analyze_and_infer_top_stocks_combined(bucket_name, folder_path)
+        return jsonify({"top_stocks": top_stocks})
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 400
+    except Exception as e:
+        return jsonify({"error": "An unexpected error occurred"}), 500
 
+ 
 
 
 
